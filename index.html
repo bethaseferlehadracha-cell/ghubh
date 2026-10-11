@@ -368,6 +368,8 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
 .pyr div b{font-size:16.5px}
 @media (max-width:980px){.mainc{min-height:0;padding:20px 16px;border-radius:20px}}
 
+
+
 @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
 @keyframes rise{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 @keyframes shake{0%,100%{translate:0}25%{translate:-5px}75%{translate:5px}}
@@ -384,12 +386,7 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
   .sheet.new{right:6%;top:22%}
   .stage{grid-template-columns:minmax(0,1fr);padding:8px 16px 28px;gap:14px}
   .side{order:-1}
-  .char{height:auto;flex-direction:row-reverse;align-items:flex-end;gap:10px;padding:12px 12px 0;border-radius:20px}
-  .char .sp{flex:1;margin-bottom:12px;font-size:14.5px}
-  .fig{flex:none;width:96px;height:120px;margin:0}
   .side{position:static;height:auto;min-height:0}
-  .char{height:auto}
-  .fig img{height:250px!important;transform:translateX(-50%);animation:none}
   .tools{display:none}
   .top{padding:0 16px;height:56px}
   .prog{display:none}
@@ -419,6 +416,35 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
   .act2{font-size:12.5px}
   .tright .pill:first-child{display:none}
 }
+/* whole figure: bottom-aligned, scaled to fit, never cropped */
+.fig{margin:8px 0 0}
+.fig img,.fig img[style]{position:absolute;top:auto;bottom:0;left:0;right:0;width:100%;object-fit:contain;object-position:center bottom;transform:none;animation:fadein .35s ease;max-width:100%}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+/* page recap */
+.recap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px;animation:pop .35s ease}
+.recap div{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:11px 14px}
+.recap div:last-child{background:#EEF5E8;border-color:#D3E4C6}
+.recap b{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--coral-d);margin-bottom:2px}
+.recap div:last-child b{color:var(--green)}
+.recap p{font-size:15px;line-height:1.5}
+.recap.nbr{flex:1;min-width:260px;margin:0}
+.recap.tr{text-align:right;margin:0 auto 22px;max-width:640px}
+.recap.tr div{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
+.recap.tr b,.recap.tr div:last-child b{color:#CFE5BE}
+.chapm{display:none}
+@media (max-width:980px){
+  .chapm{display:block;position:relative;z-index:2;padding:4px 16px 0}
+  .chapm .chap{margin-bottom:8px}
+  .chapm .dots3{display:none}
+  .pil .feed.evid{order:-1}
+  .mainc>.chap{display:none}
+  .char{flex-direction:column;align-items:stretch;padding:12px 12px 0}
+  .char .sp{margin:0}
+  .fig{height:300px;width:auto;flex:none;margin:6px 0 0}
+  .fig img,.fig img[style]{animation:none}
+}
+@media (max-width:620px){.recap{grid-template-columns:minmax(0,1fr)}.recap.nbr{min-width:0}}
+
 @media print{
   .top,.side,.next3,.btn,.shell::before{display:none!important}
   .stage{display:block;padding:0}
@@ -495,7 +521,7 @@ function scrAIntro(){
   <p>שיעור שלישי. המורה נכנס עם ערימת דפים: "תוציאו עט. מבחן."</p>
   <p>{למדת|למדת} כל השבוע. {אתה|את} {מוכן|מוכנה}.</p>
   <p style="color:var(--pencil-l)">לפחות ככה {חשבת|חשבת}...</p></div>`,
-  {head:false,foot:`<span></span><button class="btn pbtn" id="go">להתחיל במבחן ${ARROW}</button>`});
+  {head:false,foot:`<div class="recap nbr"><div><b>מה היה בעמוד הזה</b><p>{חזרת|חזרת} לכיתה י"א, רגע לפני מבחן.</p></div><div><b>מה הלאה</b><p>מבחן של 5 שאלות.</p></div></div><button class="btn pbtn" id="go">להתחיל במבחן ${ARROW}</button>`});
  qs('#go',el).onclick=next;
 }
 
@@ -510,7 +536,7 @@ function scrAQ(k){
   <div class="qbody"><div>${body}</div><div id="th"></div></div>`,
   {foot:`<div class="scars">${SCARIC}<span>צלקות שנאספו: ${k}</span></div><button class="btn pbtn" id="nx" disabled>לשאלה הבאה ${ARROW}</button>`});
  const nx=qs('#nx',el), th=qs('#th',el);
- const think=()=>{if(th.innerHTML)return;th.append(h(`<div class="thought"><p>${esc(f(it.th))}</p></div>`));nx.disabled=false};
+ const think=()=>{if(th.innerHTML)return;th.append(h(`<div class="thought"><p>${esc(f(it.th))}</p></div>`));nx.disabled=false;};
  nx.onclick=next;
  if(it.type==='blank'){const b=qs('#bl',el);b.addEventListener('input',()=>{if(b.value.trim().length>1)think()});b.focus()}
  else if(it.type==='open'){
@@ -530,7 +556,7 @@ function scrADebrief(){
    <div class="story"><p class="hl" style="font-size:clamp(36px,4.6vw,52px)">המבחן חזר מבדיקה.</p><p style="font-size:28px">{עברת|עברת} על הדף, ובכל שאלה {הרגשת|הרגשת} את זה שוב.</p></div>
    <div class="stamp">ממוצע הכיתה: 58</div></div>
    <div class="debrief">${rows}</div>`,
-  {head:false,foot:`<div class="scars">${SCARIC}<span>צלקות שנאספו: 6</span></div><button class="btn pbtn" id="nx">ומה קרה אחר כך? ${ARROW}</button>`});
+  {head:false,foot:`<div class="recap nbr"><div><b>מה היה בעמוד הזה</b><p>המבחן חזר מבדיקה, ו{אספת|אספת} 6 צלקות: כל מקום שבו הניסוח הפיל ולא הידע.</p></div><div><b>מה הלאה</b><p>חוזרים להווה. עכשיו {אתה|את} {כותב|כותבת} את המבחן.</p></div></div><button class="btn pbtn" id="nx">ומה קרה אחר כך? ${ARROW}</button>`});
  qs('#nx',el).onclick=()=>{S.started=true;next()};
 }
 
@@ -539,6 +565,7 @@ function scrTrans(){
  const el=h(`<div class="trans"><div><div class="k">כמה שנים אחר כך...</div>
  <h2>עכשיו {אתה|את} {role}.</h2>
  <p>בעוד חודש מסיים מחזור טירונים, ו{אתה|את} {כותב|כותבת} להם את המבחן העיוני על M16. את שש הצלקות מכיתה י"א {אתה|את} {לוקח|לוקחת} איתך.</p>
+ <div class="recap tr"><div><b>מה היה בעמוד הזה</b><p>{עברת|עברת} מהעבר להווה: {אתה|את} {role}.</p></div><div><b>מה הלאה</b><p>תדריך עם רוני, מפקד הקורס.</p></div></div>
  <button class="btn" id="nx">להיכנס לבסיס ${ARROW}</button></div></div>`);
  app.append(el);qs('#nx',el).onclick=next;
 }
@@ -554,6 +581,7 @@ function stage(o){
  const dots=o.dots?`<div class="dots3">${Array.from({length:o.dots[1]},(_,j)=>`<i class="${j<o.dots[0]?'d':j===o.dots[0]?'n':''}"></i>`).join('')}</div>`:'';
  const el=h(`<div class="shell"><div class="top"><div class="act2"><b>מערכה ${o.act}'</b> · ${lab}</div><div class="prog" aria-hidden="true">${prog}</div>
   <div class="tright"><div class="pill" id="fair">${fairText()}</div></div></div>
+  <div class="chapm"><div class="chap"><div class="ic">${o.icon||'!'}</div><div><b>${o.title}</b><span>${o.sub||''}</span></div>${dots}</div></div>
   <div class="stage${o.long?' long':''}"><main class="mainc"><div class="chap"><div class="ic">${o.icon||'!'}</div><div><b>${o.title}</b><span>${o.sub||''}</span></div>${dots}</div>
    <div id="body"></div><div id="after"></div></main>
   <aside class="side"><div class="char"><div class="sp" id="sp"><b class="who">רוני · מפקד הקורס</b><span id="spt"></span></div><div class="fig" id="fig"></div></div></aside></div></div>`);
@@ -565,14 +593,16 @@ function stage(o){
 }
 function roni(pose,text){
  const p=POSES[pose];const fig=qs('#fig');
- if(fig){fig.innerHTML=`<img alt="רוני, מפקד הקורס" src="${p.d}" style="height:${Math.round(p.h/550*118)}%">`}
+ if(fig){fig.innerHTML=`<img alt="רוני, מפקד הקורס" src="${p.d}" style="height:${Math.round(p.h/552*100)}%">`}
  const t=qs('#spt');if(t){t.innerHTML=f(text);const sp=qs('#sp');sp.style.animation='none';sp.offsetHeight;sp.style.animation=''}
 }
 const TAGCLS={};let tagi=0;
 function tagCls(t){if(!TAGCLS[t])TAGCLS[t]=['a','b','c'][tagi++%3];return TAGCLS[t]}
 function drawTools(){}
 function addRule(tag,text,host){if(host)host.append(h(`<div class="rule"><b>הכלל:</b> ${esc(text)}</div>`))}
-function nextBtn(host,label='המשך',tip=''){
+function recapHTML(r){return r?`<div class="recap"><div><b>מה עשינו בעמוד הזה</b><p>${r[0]}</p></div><div><b>מה הלאה</b><p>${r[1]}</p></div></div>`:''}
+function nextBtn(host,label='המשך',tip='',recap=null){
+ if(recap)host.append(h(recapHTML(recap)));
  const w=h(`<div class="next3">${tip?`<div class="tip">${tip}</div>`:'<span></span>'}<button class="btn" id="nxb">${label} ${ARROW}</button></div>`);
  host.append(w);const b=qs('#nxb',w);b.onclick=next;b.focus({preventScroll:true});w.scrollIntoView({behavior:'smooth',block:'nearest'});return w;
 }
@@ -661,7 +691,7 @@ function scrB0(){
   say:'{name}, {ברוך הבא|ברוכה הבאה}! מחזור הטירונים מסיים בעוד חודש, והמבחן העיוני על M16 עליך. בוא{|י} נעשה את זה כמו שצריך.'});
  c.body.append(h(`<div class="card"><h3>אז מה זה בכלל מבחן?</h3><p class="quote">"מבחן הוא תהליך שיטתי להתבוננות בהתנהגות, ידע או יכולות, ותיאור של ממצאי ההתבוננות בעזרת סולמות מספריים או קטגוריות קבועות."<small>Cronbach, 1990</small></p></div>`));
  c.body.append(h(`<div class="card" style="margin-top:14px"><h3>שש צלקות מכיתה י"א</h3><p style="color:var(--muted)">כל אחת מהן תחזור אליך בדרך, והפעם {אתה|את} {תתקן|תתקני} אותה.</p><div class="pool" style="margin-top:12px">${['s1','s2','s3','s6','s9','s10'].map(k=>`<span class="scar">${SCARIC}${esc(f(SCARS[k]))}</span>`).join('')}</div></div>`));
- nextBtn(c.after,'מתחילים');
+ nextBtn(c.after,'מתחילים','',['{הכרת|הכרת} את רוני, את ההגדרה של מבחן ואת שש הצלקות שנתקן בדרך.','מבחן תקף: ארבעה כללים שהופכים מבחן לטוב ומקצועי.']);
 }
 const PRIN=[['מיצוי','בוחן את כל החומר ומשקף את מטרות ההכשרה'],['פרופורציונלי','מייצג נכון את הנושאים. לנושאים קריטיים – יותר שאלות'],['בלבדיות','בוחן רק את מה שרלוונטי, ולא נושאים שלא הופיעו בחומר'],['מותאם לרמת הקושי','של התחום ושל הנבחנים. קשה יותר כשצריך, אבל הוגן']];
 async function scrB1(){
@@ -676,7 +706,7 @@ async function scrB1(){
   {small:'תלונה מחניך',t:'"הייתה שאלה על הערה שהמדריך אמר בכיתה בדרך אגב. היא לא הופיעה במצגת ולא באוגדן."',c:2,ok:'נכון. בוחנים רק את מה שבאמת היה חלק מהחומר.',rule:['מבחן תקף','בלבדיות: בוחנים רק את מה שנלמד'],wd:'השאלה בדקה משהו שלא היה חלק משמעותי מהחומר. איזה כלל אומר לבחון רק את הרלוונטי?'},
   {small:'תלונה ממפקד',t:'"בקורס מ"כים נתנו מבחן על נשק באותה רמה כמו לטירונים."',c:3,ok:'נכון. למ"כ בקורס מ"כים כותבים מבחן קצת קשה יותר על נשק מאשר לטירון.',rule:['מבחן תקף','מותאם לרמת הקושי של התחום ושל הנבחנים'],wd:'חשוב על מי שנבחן. מה ההבדל בין מ"כ לטירון?'}
  ],{opts,label:'תלונה'});
- nextBtn(c.after);
+ nextBtn(c.after,'המשך','',['{זיהית|זיהית} בתלונות של חניכים את ארבעת הכללים של מבחן תקף: מיצוי, פרופורציונלי, בלבדיות והתאמה לרמת הקושי.','שבעת השלבים בבניית מבחן עיוני.']);
 }
 async function scrB2(){
  const c=stage({act:'ב',step:0,title:'שבעת השלבים',sub:'בונים כל מבחן לפי אותו תהליך',icon:'7',pose:8,
@@ -684,7 +714,7 @@ async function scrB2(){
  const ok=await orderTask(c.body,['הכנת עץ נושאים לבחינה','התאמת רמת למידה','קביעת כמות שאלות בכל נושא','חיבור פריטי השאלות','חיבור הוראות למבחן','הרצת פיילוט','ביצוע הערכה ובקרה']);
  c.say(4,ok?'מושלם, בניסיון הראשון. מכאן נעבור שלב אחרי שלב.':'זה הסדר. מכאן נעבור שלב אחרי שלב.');
  addRule('תהליך','7 שלבים: עץ נושאים ← רמת למידה ← כמות שאלות ← פריטים ← הוראות ← פיילוט ← הערכה',c.body);
- nextBtn(c.after,'לשלב 1','את שלבים 6–7 לומדים לעומק בשיעור מבחן מעשי. כאן רק נציץ בהם בסוף.');
+ nextBtn(c.after,'לשלב 1','את שלבים 6–7 לומדים לעומק בשיעור מבחן מעשי. כאן רק נציץ בהם בסוף.',['{סידרת|סידרת} את שבעת השלבים לבניית מבחן עיוני.','שלב 1: בונים עץ נושאים למבחן.']);
 }
 async function scrB3(){
  const c=stage({act:'ב',step:1,title:'עץ נושאים',sub:'ההכשרה: טירונות',icon:'1',pose:1,
@@ -696,7 +726,7 @@ async function scrB3(){
  c.say(4,'זה העץ שלנו. כאן ארבעה נושאים לשם הדוגמה. במציאות העץ כולל את כל ראשי הפרקים מחוברת הטירונות.');
  c.body.append(h(`<div class="card" style="margin-top:16px"><div class="tree"><div class="root">מבחן M16 · סוף טירונות</div><div class="stem"></div><div class="branches"><span>הת"ת M16</span><span>פריקה וטעינה</span><span>פירוק M16</span><span>הוראות בטיחות</span></div></div></div>`));
  addRule('עץ נושאים','רק נושאים שנלמדו בהכשרה שהחניכים עברו (כאן: טירונות)',c.body);
- nextBtn(c.after,'לשלב 2');
+ nextBtn(c.after,'לשלב 2','',['{בנית|בנית} עץ נושאים למבחן סוף טירונות, רק מנושאים שנלמדו בטירונות.','שלב 2: מתאימים לכל נושא את רמת הלמידה.']);
 }
 const LEVELS=['זיכרון והבנה','תפעול והרגל','ניתוח והערכה','יצירה'];
 async function scrB4(){
@@ -711,7 +741,7 @@ async function scrB4(){
   {small:'דוגמה לשאלה',t:'"בגן החיות בקיץ כל החיות מתחבאות, והמבקרים לא נהנים. כתוב קטע באורך 10 שורות ובו הצעתך לפתרון."',c:3,ok:'בדיוק. התמודדות עם בעיה ומציאת פתרון חדש היא יצירה.',wd:'החניך צריך להמציא פתרון לבעיה. איזו רמה הכי גבוהה?'}
  ],{opts:LEVELS,label:'שאלה'});
  addRule('רמת למידה','לכל נושא בוחרים על איזו רמת למידה נשאל, לפי מה שרוצים למדוד',host);
- nextBtn(c.after,'לשלב 3');
+ nextBtn(c.after,'לשלב 3','',['{התאמת|התאמת} שאלות לארבע רמות הלמידה: זיכרון והבנה, תפעול והרגל, ניתוח והערכה, יצירה.','שלב 3: מחליטים כמה שאלות יקבל כל נושא.']);
 }
 async function scrB5(){
  const c=stage({act:'ב',step:3,title:'כמות שאלות בכל נושא',sub:'טבלת המתאר',icon:'3',pose:7,
@@ -734,7 +764,7 @@ async function scrB5(){
  c.body.append(h(`<div style="margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="approved">מאושר · מפקד הקורס</span><span style="color:var(--muted);font-size:14.5px">השלב הבא בטבלה: לחלק את השאלות של כל נושא בין רמות הלמידה.</span></div>`));
  addRule('כמות שאלות','לפי חשיבות הנושא, היקף החומר ורמת הקושי',c.body);
  addRule('כמות שאלות','את טבלת המתאר מאשר מומחה תוכן',null);
- nextBtn(c.after,'לשלב 4');
+ nextBtn(c.after,'לשלב 4','',['{חילקת|חילקת} 10 שאלות לפי משקל הנושאים, ו{קיבלת|קיבלת} אישור של מומחה תוכן.','שלב 4: חיבור פריטי השאלות, השלב הכי חשוב.']);
 }
 function scrB6(){
  const c=stage({act:'ב',step:4,title:'חיבור פריטי השאלות',sub:'בית המלאכה',icon:'4',pose:1,
@@ -742,7 +772,7 @@ function scrB6(){
  const T=[['רב ברירה','מסד, תשובה נכונה אחת ומסיחים'],['נכון / לא נכון','היגד שהנבחן מחליט אם הוא נכון'],['התאמה','שני טורים שמחברים ביניהם'],['סדר מחדש','רשימה לא מסודרת שצריך לסדר'],['השלמה','משפט עובדתי שחסרה בו עובדה אחת'],['זיהוי','תמונה, מפה או שרטוט לזהות'],['פתוחה ממוקדת','הנבחן מחבר תשובה, עם הנחיות מכוונות'],['רשימה','הוראה לביצוע בלי חלק מהתשובה'],['קלוז','טקסט שמילים הושמטו ממנו']];
  c.body.append(h(`<div class="types9">${T.map(t=>`<div><b>${t[0]}</b><span>${t[1]}</span></div>`).join('')}</div>`));
  c.body.append(h(`<p style="margin-top:14px;color:var(--muted)">בכל סוג נעבור על טיוטות מהמבחן של המחזור הקודם, נמצא מה לא בסדר ונתקן. חלק מהן {תכיר|תכירי} מכיתה י"א.</p>`));
- nextBtn(c.after,'לבית המלאכה');
+ nextBtn(c.after,'לבית המלאכה','',['{הכרת|הכרת} את תשעת סוגי השאלות במבחן עיוני.','בית המלאכה: מתקנים טיוטות של שאלות רב ברירה.']);
 }
 
 /* draft screen */
@@ -767,7 +797,8 @@ async function draftScreen(cfg){
  if(cfg.why)why(a,cfg.why);
  if(cfg.scar)fix(cfg.scar);
  (cfg.rules||[]).forEach(r=>addRule(cfg.type,r,a));
- nextBtn(c.after,cfg.nextLabel||'לטיוטה הבאה',cfg.tip||'');
+ const lbl=cfg.nextLabel||'לטיוטה הבאה';
+ nextBtn(c.after,lbl,cfg.tip||'',[`{תיקנת|תיקנת} טיוטה של שאלת ${cfg.type}. ${(cfg.rules&&cfg.rules[0])||''}.`,cfg.nextWhat||(lbl==='לטיוטה הבאה'?`עוד טיוטה של שאלת ${cfg.type} לתיקון.`:lbl.replace(/^ל/,'')+'.')]);
 }
 
 const MC_MORE=`<b>פריט רב ברירה</b> – הצורה השכיחה ביותר של שאלה בצה"ל. בנוי משאלה וממספר תשובות אפשריות, ורק אחת נכונה.
@@ -852,7 +883,7 @@ function tfScreens(){
     {small:'היגד',t:'הסביח הכי טוב בארץ הוא הסביח של עובד. נכון / לא נכון',c:1,ok:'בדיוק. רושמים רק עובדות ברורות שאפשר לסווג כנכונות או לא נכונות.',rule:['נכון / לא נכון','רק עובדות שאפשר לסווג חד-משמעית']},
     {small:'היגד',t:'הסופר הישראלי יוסף עגנון לא זכה בפרס נובל לספרות. נכון / לא נכון',c:2,ok:'נכון. יש סכנה שהחניך לא יבחין במילת השלילה, ולכן מדגישים אותה.'}
    ],{opts:O,cols:1,label:'היגד'});
-   nextBtn(c.after,'להתאמה',TIP_TF);
+   nextBtn(c.after,'להתאמה',TIP_TF,['{זיהית|זיהית} שלוש בעיות נפוצות בהיגדי נכון / לא נכון.','שאלת התאמה: שני טורים שמחברים ביניהם.']);
   }
  ];
 }
@@ -870,7 +901,7 @@ function otherTypes(){
    c.say(4,'בדיוק. בפריט עם 3 עובדות בכל צד, מי שיודע 2 מקבל את השלישית בחינם. מוסיפים סעיף לאחד הטורים.');
    addRule('התאמה','מספר שונה של פריטים בטורים, 5–12 סעיפים',c.body);
    addRule('התאמה','מציינים בהוראה את צורת ההתאמה וכמה פעמים כל תשובה',c.body);
-   nextBtn(c.after,'לסדר מחדש','<b>במבחן מתוקשב:</b> אין ציון חלקי, טעות אחת פוסלת את כל השאלה. בונים בזהירות.');
+   nextBtn(c.after,'לסדר מחדש','<b>במבחן מתוקשב:</b> אין ציון חלקי, טעות אחת פוסלת את כל השאלה. בונים בזהירות.',['{זיהית|זיהית} מה צריך לתקן בשאלת התאמה.','שאלת סדר מחדש.']);
   },
   ()=>draftScreen({type:'סדר מחדש',sub:'רשימה לא מסודרת שצריך לסדר',pose:3,
    say:'שאלת סדר מתאימה לנושאים שעיקרם סדר: סדר פעולות, נוהל, מהלכים. מה הבעיה בטיוטה?',
@@ -892,7 +923,7 @@ function otherTypes(){
     {small:'משפט',t:'מרחק מבצעי עבור M16 הוא ________.',c:2,ok:'בדיוק. ברווח מספרי מגדירים יחידת מידה.',rule:['השלמה','ברווח מספרי מגדירים יחידת מידה']},
     {small:'משפט',t:'השחקנית המוכשרת בארץ היא ________.',c:3,ok:'נכון. כישרון הוא דבר סובייקטיבי, ולכן אין תשובה אחת.',rule:['השלמה','רק תשובה אחת אפשרית בכל רווח']}
    ],{opts:O,label:'משפט'});
-   nextBtn(c.after,'לקלוז','<b>במבחן מתוקשב:</b> משתמשים בשאלת קלוז במקום פריט השלמה רגיל, כדי שהמערכת תבדוק אוטומטית.');
+   nextBtn(c.after,'לקלוז','<b>במבחן מתוקשב:</b> משתמשים בשאלת קלוז במקום פריט השלמה רגיל, כדי שהמערכת תבדוק אוטומטית.',['{זיהית|זיהית} ארבע בעיות נפוצות בפריטי השלמה.','שאלת קלוז.']);
   },
   async()=>{ // cloze
    const c=stage({act:'ב',step:4,title:'קלוז',sub:'טקסט שמילים הושמטו ממנו',icon:'4',pose:7,
@@ -903,7 +934,7 @@ function otherTypes(){
    await choose(a,{q:'',opts:['לא. 60 מתוך 240 זו מילה מושמטת לכל 4 מילים, יותר מדי','כן. הקטע באורך האופטימלי','לא. הקטע ארוך מדי'],c:0,correct:0,cols:1,wrong:{1:'האורך באמת תקין, אבל {בדוק|בדקי} את קצב ההשמטה.',2:'240 מילים זה בטווח של 200–300. {בדוק|בדקי} את קצב ההשמטה.'}});
    c.say(4,'נכון. ב-240 מילים מותר להשמיט עד 40.');
    addRule('קלוז','200–300 מילים, ולא יותר ממילה מושמטת אחת לכל 6',a);
-   nextBtn(c.after,'לזיהוי','<b>במבחן מתוקשב:</b> נותנים מחסן מילים ומבקשים העתק-הדבק, כדי שהמערכת תזהה את התשובה.');
+   nextBtn(c.after,'לזיהוי','<b>במבחן מתוקשב:</b> נותנים מחסן מילים ומבקשים העתק-הדבק, כדי שהמערכת תזהה את התשובה.',['{בדקת|בדקת} את קצב ההשמטה בשאלת קלוז.','שאלת זיהוי.']);
   },
   ()=>draftScreen({type:'זיהוי',sub:'תמונה, מפה או שרטוט',pose:2,
    say:'בפריט זיהוי החניך מזהה מה שמופיע מולו: שמות חלקים, כלים, סימנים או מיקום במפה. מה חסר בטיוטה?',
@@ -939,7 +970,7 @@ function otherTypes(){
     {small:'החומר',t:'נושא שיש בו דעות שונות, התלבטות ושיקול דעת',c:3,ok:'בדיוק. שאלה פתוחה ממוקדת מתאימה במיוחד לזה.'}
    ],{opts:['סדר מחדש','התאמה','זיהוי','פתוחה ממוקדת'],label:'חומר'});
    addRule('חיבור פריטים','מתאימים את סוג השאלה לסוג החומר הנבחן',host);
-   nextBtn(c.after,'לניקוד');
+   nextBtn(c.after,'לניקוד','',['{התאמת|התאמת} סוג שאלה לסוג החומר הנבחן.','ניקוד: כמה נקודות תקבל כל שאלה.']);
   }
  ];
 }
@@ -954,7 +985,7 @@ async function scrScore(){
   {small:'חשיבות התוכן',t:'איזו שאלה תקבל יותר נקודות?',opts:['שאלה על תוכן עיקרי, שנדרש הרבה במצב האמת','שאלה על תוכן משני'],c:0,ok:'נכון. לתכנים העיקריים נותנים את עיקר הניקוד.'}
  ],{label:'השוואה'});
  addRule('ניקוד','יותר נקודות לתוכן עיקרי, לרמת למידה גבוהה ולפריט תובעני יותר',host);
- nextBtn(c.after,'לשלב 5');
+ nextBtn(c.after,'לשלב 5','',['{השווית|השווית} בין שאלות ו{קבעת|קבעת} איזו מקבלת יותר נקודות.','שלב 5: כותבים את הוראות המבחן.']);
 }
 async function scrInstr(){
  const c=stage({act:'ב',step:5,title:'הוראות המבחן',sub:'כל מה שהנבחן צריך לדעת לפני שמתחיל',icon:'5',pose:8,
@@ -968,7 +999,7 @@ async function scrInstr(){
  c.body.append(h(`<div class="sheetx"><h5>הוראות כלליות · בתחילת המבחן</h5><ul><li>משך הבחינה: ___ דקות, כולל הארכת זמן.</li><li>בסיס הידע: החומר שנלמד בקורס. האם מותר להיעזר בחומר עזר.</li><li>בשאלות הממוקדות: נדרש ניסוח ברור ומידת פירוט מוגדרת.</li><li>כללי בחירה בין שאלות, אם יש.</li><li>האם אפשר לעבור בין השאלות בסדר הנוח לך.</li></ul><h5>הוראות לכל שאלה</h5><ul><li>דרך הסימון: הקף בעיגול, סמן ב-X.</li><li>מספר הנקודות לכל תשובה נכונה.</li></ul></div>`));
  addRule('הוראות','כלליות: משך (כולל הארכה), בסיס ידע, קריטריונים, בחירה, שיטוט',c.body);
  addRule('הוראות','לכל שאלה: דרך הסימון והניקוד',null);
- nextBtn(c.after,'למערכה ג\': הפיילוט');
+ nextBtn(c.after,'למערכה ג\': הפיילוט','',['{כתבת|כתבת} הוראות מבחן מלאות, וסגרת את הצלקת האחרונה מכיתה י"א.','מערכה ג\': הפיילוט. 20 טירונים פותרים את המבחן שלך.']);
 }
 
 /* ===================== ACT C — pilot ===================== */
@@ -991,12 +1022,12 @@ async function scrPilot1(){
  await choose(it,{q:'מה אומרת דרגת הקושי?',opts:['השאלה קלה','השאלה קשה'],correct:0,wrong:{1:'90% מהטירונים ענו נכון, ורק 10% לא. רוב החניכים הצליחו בה.'}});
  c.say(4,'נכון. 90% ענו נכון, ולכן השאלה קלה. והפעם הם הצליחו כי ברור מה שואלים.');
  addRule('פיילוט','דרגת קושי = אחוז העונים נכון. 90% ענו נכון: שאלה קלה',it);
- nextBtn(c.after,'לשאלה הבאה');
+ nextBtn(c.after,'לשאלה הבאה','',['{בדקת|בדקת} את דרגת הקושי של השאלה שתיקנת: 90% ענו נכון, שאלה קלה.','שאלה שנייה בפיילוט, הפעם מהמאגר הישן.']);
 }
 async function scrPilot2(){
  const c=stage({act:'ג',step:7,title:'הערכה ובקרה',sub:'ניתוח פריטי המבחן',icon:'7',pose:7,
   say:'רגע לפני הפיילוט צירפתי שאלה מהמאגר הישן, ש{לא הספקת|לא הספקת} לעבור עליה. {תסתכל|תסתכלי} מה קרה.'});
- c.body.append(h(`<div class="pil"><div id="itm"></div><div class="feed"><h4><span>מה אמרו בכיתה</span><span>על שאלה 4</span></h4>
+ c.body.append(h(`<div class="pil"><div id="itm"></div><div class="feed evid"><h4><span>מה אמרו בכיתה</span><span>על שאלה 4</span></h4>
   <div class="msg"><div class="a" style="background:#F2C4B3">ע</div><div class="b"><small>עומר</small>קראתי פעמיים ועדיין לא הבנתי אם "חוסר" ו"לא" מבטלים אחד את השני.</div></div>
   <div class="msg"><div class="a" style="background:#CFE5BE">ש</div><div class="b"><small>שירה</small>ידעתי את החומר, אבל התבלבלתי מהניסוח.</div></div>
   <div class="msg"><div class="a">ת</div><div class="b"><small>תום</small>פשוט ניחשתי.</div></div></div></div>`));
@@ -1009,7 +1040,7 @@ async function scrPilot2(){
   wrong:{1:'מבחן יכול להיות קשה, אבל הוגן. כאן הטירונים נכשלו בגלל הניסוח, לא בגלל החומר.',2:'הנושא נלמד ושייך למבחן (מיצוי). הבעיה בניסוח, לא בנושא.'}});
  c.say(6,'בדיוק. הקושי כאן בא מהשלילה הכפולה, לא מהחומר. מתקנים את הניסוח ובודקים שוב.');
  addRule('הערכה ובקרה','שאלה קשה בגלל ניסוח ולא בגלל החומר: מתקנים אותה',a);
- nextBtn(c.after,'לסיום','את הפיילוט וההערכה והבקרה לומדים לעומק בשיעור מבחן מעשי.');
+ nextBtn(c.after,'לסיום','את הפיילוט וההערכה והבקרה לומדים לעומק בשיעור מבחן מעשי.',['{זיהית|זיהית} שאלה קשה בגלל ניסוח, ו{החלטת|החלטת} לתקן אותה.','סיום: עיקרי השיעור.']);
 }
 
 /* ===================== EPILOGUE ===================== */
