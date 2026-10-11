@@ -385,8 +385,6 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
   .sheet.old{right:auto;left:8%;top:6%}
   .sheet.new{right:6%;top:22%}
   .stage{grid-template-columns:minmax(0,1fr);padding:8px 16px 28px;gap:14px}
-  .side{order:-1}
-  .side{position:static;height:auto;min-height:0}
   .tools{display:none}
   .top{padding:0 16px;height:56px}
   .prog{display:none}
@@ -433,17 +431,91 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
 .recap.tr b,.recap.tr div:last-child b{color:#CFE5BE}
 .chapm{display:none}
 @media (max-width:980px){
-  .chapm{display:block;position:relative;z-index:2;padding:4px 16px 0}
-  .chapm .chap{margin-bottom:8px}
-  .chapm .dots3{display:none}
   .pil .feed.evid{order:-1}
-  .mainc>.chap{display:none}
-  .char{flex-direction:column;align-items:stretch;padding:12px 12px 0}
-  .char .sp{margin:0}
-  .fig{height:300px;width:auto;flex:none;margin:6px 0 0}
-  .fig img,.fig img[style]{animation:none}
 }
 @media (max-width:620px){.recap{grid-template-columns:minmax(0,1fr)}.recap.nbr{min-width:0}}
+
+
+/* ===== v4 layout: title → Roni scene (speech bubble beside him) → content ===== */
+.stage1{position:relative;z-index:1;width:100%;max-width:1080px;margin:0 auto;padding:6px 32px 32px}
+.board{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:26px 30px;box-shadow:0 18px 40px -30px var(--shadow)}
+.board .card,.board .pcard,.board .drow,.board details.more .in{background:var(--cream)}
+.scene{position:relative;display:grid;grid-template-columns:300px minmax(0,1fr);align-items:center;gap:8px;min-height:280px;margin:2px 0 22px;border-radius:24px;overflow:hidden;
+  background:radial-gradient(circle at 85% 30%,#E6F0DC 0,transparent 55%),linear-gradient(180deg,#DCE9CF,#C3DAB0)}
+.scene .fig{position:relative;height:280px;overflow:hidden;margin:0;align-self:end}
+.scene .sp{margin-top:16px!important;margin-bottom:16px!important}
+.scene .fig img,.scene .fig img[style]{position:absolute;top:16px;bottom:auto;left:50%;right:auto;width:auto;max-width:none;transform:translateX(-50%);object-fit:fill;filter:drop-shadow(0 10px 18px rgba(45,74,49,.25));animation:fadein .35s ease}
+.scene .sp{position:relative;justify-self:start;max-width:600px;margin:0 6px 0 28px;background:var(--white);border-radius:24px;padding:18px 22px;font-size:18px;line-height:1.55;font-weight:500;box-shadow:0 10px 26px -14px rgba(45,74,49,.5)}
+.scene .sp::after{content:"";position:absolute;right:-18px;top:34%;border-top:13px solid transparent;border-bottom:13px solid transparent;border-left:20px solid var(--white)}
+.scene .sp b.who{font-size:12.5px}
+/* reveal cards */
+.rvhd{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;font-weight:700;color:var(--muted);margin-bottom:10px}
+.rvhd b{color:var(--coral-d);font-variant-numeric:tabular-nums}
+.rvgrid{display:grid;gap:10px}
+.rvgrid.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rvgrid.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rv{position:relative;min-height:118px;border-radius:18px;border:0;padding:0;cursor:pointer;text-align:right;background:transparent;perspective:900px}
+.rvf,.rvb{position:absolute;inset:0;border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px;backface-visibility:hidden;transition:transform .45s ease}
+.rvf{background:var(--forest);color:var(--white)}
+.rvf em{font-style:normal;font-size:12px;opacity:.7;margin-top:4px}
+.rvf .scar{align-self:flex-start;background:rgba(255,255,255,.14);color:#F6D3C6}
+.rvf b{font-size:16px;line-height:1.35}
+.rvf b.big1{font-size:21px}
+.rvb{background:var(--white);border:1.5px solid var(--sage2);transform:rotateY(180deg)}
+.rvb b{font-size:15.5px;color:var(--green)}
+.rvb span{font-size:14.5px;line-height:1.5;color:var(--ink)}
+.rvb small{font-size:12px;font-weight:800;color:var(--muted)}
+.rv.open .rvf{transform:rotateY(-180deg)}
+.rv.open .rvb{transform:rotateY(0)}
+.rv:hover:not(.open) .rvf{background:#36583A}
+/* pyramid */
+.pyr2{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pt{border:0;border-radius:14px;padding:12px 16px;cursor:pointer;background:var(--forest);color:var(--white);text-align:center;transition:background .25s}
+.pt b{display:block;font-size:17px}
+.pt span{display:none;font-size:14.5px;line-height:1.5;margin-top:4px}
+.pt.open{background:var(--sage);color:var(--forest)}
+.pt.open span{display:block}
+/* cloze definition */
+.clz{font-size:20px;line-height:2.1;font-weight:500}
+.clz small{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+.bl{display:inline-block;min-width:120px;border-bottom:2.5px solid var(--line);margin:0 4px;text-align:center;color:var(--forest);font-weight:800;line-height:1.3}
+.bl.cur{border-color:var(--coral);background:var(--coral-l);border-radius:6px 6px 0 0;min-height:1.3em}
+.bl.in{border-color:var(--green);animation:pop .3s ease}
+/* recap interstitial */
+.rcp{min-height:100vh;display:grid;place-items:center;padding:28px 16px;background:var(--cream)}
+.rcard{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:28px 30px;max-width:560px;width:100%;box-shadow:0 22px 50px -30px var(--shadow);animation:pop .35s ease}
+.rk{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--coral-d);margin-bottom:14px}
+.rrow{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px dashed var(--line)}
+.rrow:first-of-type{border-top:0}
+.rrow i{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-weight:900;flex:none}
+.rrow i.ok{background:var(--sage);color:var(--forest)}
+.rrow i.nx{background:var(--coral-l);color:var(--coral-d)}
+.rrow b{display:block;font-size:13px;color:var(--muted);font-weight:800}
+.rrow p{font-size:18px;line-height:1.5;font-weight:600}
+.rcard .btn{margin-top:16px}
+/* accordion */
+.acc{border-top:1px solid var(--line);padding:10px 0}
+.acc summary{cursor:pointer;font-weight:800;font-size:16px;color:var(--forest);list-style:none;display:flex;justify-content:space-between}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";color:var(--coral-d);font-size:20px;line-height:1}
+.acc[open] summary::after{content:"–"}
+@media (max-width:980px){
+  .stage1{padding:4px 12px 24px}
+  .board{padding:18px 16px;border-radius:20px}
+  .rvgrid.c3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:620px){
+  .scene{grid-template-columns:150px minmax(0,1fr);min-height:210px;gap:4px;margin-bottom:16px}
+  .scene .fig{height:210px}
+  .chap .dots3{display:none}
+  .scene .sp{font-size:15px;padding:12px 14px;margin:0 4px 0 10px;border-radius:18px}
+  .scene .sp::after{right:-14px;border-top-width:10px;border-bottom-width:10px;border-left-width:15px}
+  .scene .fig img,.scene .fig img[style]{top:12px}
+  .rvgrid.c2,.rvgrid.c3{grid-template-columns:minmax(0,1fr)}
+  .rv{min-height:96px}
+  .clz{font-size:17px}
+  .bl{min-width:90px}
+}
 
 @media print{
   .top,.side,.next3,.btn,.shell::before{display:none!important}
@@ -521,7 +593,7 @@ function scrAIntro(){
   <p>שיעור שלישי. המורה נכנס עם ערימת דפים: "תוציאו עט. מבחן."</p>
   <p>{למדת|למדת} כל השבוע. {אתה|את} {מוכן|מוכנה}.</p>
   <p style="color:var(--pencil-l)">לפחות ככה {חשבת|חשבת}...</p></div>`,
-  {head:false,foot:`<div class="recap nbr"><div><b>מה היה בעמוד הזה</b><p>{חזרת|חזרת} לכיתה י"א, רגע לפני מבחן.</p></div><div><b>מה הלאה</b><p>מבחן של 5 שאלות.</p></div></div><button class="btn pbtn" id="go">להתחיל במבחן ${ARROW}</button>`});
+  {head:false,foot:`<span></span><button class="btn pbtn" id="go">להתחיל במבחן ${ARROW}</button>`});
  qs('#go',el).onclick=next;
 }
 
@@ -538,13 +610,13 @@ function scrAQ(k){
  const nx=qs('#nx',el), th=qs('#th',el);
  const think=()=>{if(th.innerHTML)return;th.append(h(`<div class="thought"><p>${esc(f(it.th))}</p></div>`));nx.disabled=false;};
  nx.onclick=next;
- if(it.type==='blank'){const b=qs('#bl',el);b.addEventListener('input',()=>{if(b.value.trim().length>1)think()});b.focus()}
+ if(it.type==='blank'){const b=qs('#bl',el);b.addEventListener('input',()=>{if(b.value.trim().length>1)think()})}
  else if(it.type==='open'){
    nx.style.visibility='hidden';
    TIMERS.push(setTimeout(()=>{
      const ov=h(`<div class="timeup" role="dialog" aria-modal="true"><div class="card"><h2>נגמר הזמן!</h2><p>"מניחים עטים. אוספים דפים."<br>רגע, כמה זמן היה בכלל? אף אחד לא אמר.</p><button class="btn" id="tu">להגיש את הדף ${ARROW}</button></div></div>`);
-     document.body.append(ov);qs('#tu',ov).onclick=()=>{ov.remove();next()};qs('#tu',ov).focus();
-   },9000));
+     document.body.append(ov);qs('#tu',ov).onclick=()=>{ov.remove();next()};qs('#tu',ov).focus({preventScroll:true});
+   },4000));
  }
  else{const box=qs('#opts',el);box.onclick=e=>{const b=e.target.closest('.opt');if(!b)return;box.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');think()}}
 }
@@ -556,8 +628,8 @@ function scrADebrief(){
    <div class="story"><p class="hl" style="font-size:clamp(36px,4.6vw,52px)">המבחן חזר מבדיקה.</p><p style="font-size:28px">{עברת|עברת} על הדף, ובכל שאלה {הרגשת|הרגשת} את זה שוב.</p></div>
    <div class="stamp">ממוצע הכיתה: 58</div></div>
    <div class="debrief">${rows}</div>`,
-  {head:false,foot:`<div class="recap nbr"><div><b>מה היה בעמוד הזה</b><p>המבחן חזר מבדיקה, ו{אספת|אספת} 6 צלקות: כל מקום שבו הניסוח הפיל ולא הידע.</p></div><div><b>מה הלאה</b><p>חוזרים להווה. עכשיו {אתה|את} {כותב|כותבת} את המבחן.</p></div></div><button class="btn pbtn" id="nx">ומה קרה אחר כך? ${ARROW}</button>`});
- qs('#nx',el).onclick=()=>{S.started=true;next()};
+  {head:false,foot:`<div class="scars">${SCARIC}<span>צלקות שנאספו: 6</span></div><button class="btn pbtn" id="nx">ומה קרה אחר כך? ${ARROW}</button>`});
+ qs('#nx',el).onclick=()=>{S.started=true;showRecap(['המבחן חזר מבדיקה, ו{אספת|אספת} 6 צלקות: כל מקום שבו הניסוח הפיל ולא הידע.','חוזרים להווה. עכשיו {אתה|את} {כותב|כותבת} את המבחן.'])};
 }
 
 function scrTrans(){
@@ -565,46 +637,53 @@ function scrTrans(){
  const el=h(`<div class="trans"><div><div class="k">כמה שנים אחר כך...</div>
  <h2>עכשיו {אתה|את} {role}.</h2>
  <p>בעוד חודש מסיים מחזור טירונים, ו{אתה|את} {כותב|כותבת} להם את המבחן העיוני על M16. את שש הצלקות מכיתה י"א {אתה|את} {לוקח|לוקחת} איתך.</p>
- <div class="recap tr"><div><b>מה היה בעמוד הזה</b><p>{עברת|עברת} מהעבר להווה: {אתה|את} {role}.</p></div><div><b>מה הלאה</b><p>תדריך עם רוני, מפקד הקורס.</p></div></div>
  <button class="btn" id="nx">להיכנס לבסיס ${ARROW}</button></div></div>`);
- app.append(el);qs('#nx',el).onclick=next;
+ app.append(el);qs('#nx',el).onclick=()=>showRecap(['{עברת|עברת} מהעבר להווה: עכשיו {אתה|את} {role}.','תדריך עם רוני, מפקד הקורס.']);
 }
 
 /* ===================== SHELL for acts B & C ===================== */
 let CUR=null;
 const STEPS=['עץ נושאים','רמת למידה','כמות שאלות','חיבור פריטים','הוראות','פיילוט','הערכה ובקרה'];
 function stage(o){
- // o: act ('ב'|'ג'), step (0..7; 0 = before), title, sub, icon, dots:[cur,total], pose, say
  app.innerHTML='';
  const prog=STEPS.map((_,j)=>`<i class="${j+1<o.step?'d':j+1===o.step?'n':''}"></i>`).join('');
  const lab=o.step>7?'סיום':o.step?`שלב ${o.step} מתוך 7: ${STEPS[o.step-1]}`:'לפני שמתחילים';
  const dots=o.dots?`<div class="dots3">${Array.from({length:o.dots[1]},(_,j)=>`<i class="${j<o.dots[0]?'d':j===o.dots[0]?'n':''}"></i>`).join('')}</div>`:'';
  const el=h(`<div class="shell"><div class="top"><div class="act2"><b>מערכה ${o.act}'</b> · ${lab}</div><div class="prog" aria-hidden="true">${prog}</div>
   <div class="tright"><div class="pill" id="fair">${fairText()}</div></div></div>
-  <div class="chapm"><div class="chap"><div class="ic">${o.icon||'!'}</div><div><b>${o.title}</b><span>${o.sub||''}</span></div>${dots}</div></div>
-  <div class="stage${o.long?' long':''}"><main class="mainc"><div class="chap"><div class="ic">${o.icon||'!'}</div><div><b>${o.title}</b><span>${o.sub||''}</span></div>${dots}</div>
-   <div id="body"></div><div id="after"></div></main>
-  <aside class="side"><div class="char"><div class="sp" id="sp"><b class="who">רוני · מפקד הקורס</b><span id="spt"></span></div><div class="fig" id="fig"></div></div></aside></div></div>`);
+  <div class="stage1"><main class="board">
+   <div class="chap"><div class="ic">${o.icon||'!'}</div><div><b>${o.title}</b><span>${o.sub||''}</span></div>${dots}</div>
+   <div class="scene"><div class="fig" id="fig"></div><div class="sp" id="sp"><b class="who">רוני · מפקד הקורס</b><span id="spt"></span></div></div>
+   <div id="body"></div><div id="after"></div></main></div></div>`);
  app.append(el);
  CUR={body:qs('#body',el),after:qs('#after',el),say:(pose,text)=>roni(pose,text)};
  roni(o.pose||1,o.say||'');
- drawTools();
  return CUR;
 }
 function roni(pose,text){
  const p=POSES[pose];const fig=qs('#fig');
- if(fig){fig.innerHTML=`<img alt="רוני, מפקד הקורס" src="${p.d}" style="height:${Math.round(p.h/552*100)}%">`}
+ if(fig){const small=window.innerWidth<=620;const H=small?520:740,W=small?150:300;
+  const sc=Math.min(H/552,W/p.w);fig.innerHTML=`<img alt="רוני, מפקד הקורס" src="${p.d}" style="height:${Math.round(p.h*sc)}px">`}
  const t=qs('#spt');if(t){t.innerHTML=f(text);const sp=qs('#sp');sp.style.animation='none';sp.offsetHeight;sp.style.animation=''}
 }
 const TAGCLS={};let tagi=0;
 function tagCls(t){if(!TAGCLS[t])TAGCLS[t]=['a','b','c'][tagi++%3];return TAGCLS[t]}
 function drawTools(){}
 function addRule(tag,text,host){if(host)host.append(h(`<div class="rule"><b>הכלל:</b> ${esc(text)}</div>`))}
-function recapHTML(r){return r?`<div class="recap"><div><b>מה עשינו בעמוד הזה</b><p>${r[0]}</p></div><div><b>מה הלאה</b><p>${r[1]}</p></div></div>`:''}
+function showRecap(r){
+ TIMERS.forEach(clearTimeout);TIMERS=[];
+ app.innerHTML='';
+ const el=h(`<div class="rcp"><div class="rcard"><div class="rk">סיכום עמוד</div>
+  <div class="rrow"><i class="ok">✓</i><div><b>מה עשינו בעמוד הזה</b><p>${r[0]}</p></div></div>
+  <div class="rrow"><i class="nx">←</i><div><b>מה הלאה</b><p>${r[1]}</p></div></div>
+  <button class="btn" id="rgo">המשך ${ARROW}</button></div></div>`);
+ app.append(el);toTop();qs('#rgo',el).onclick=next;
+}
 function nextBtn(host,label='המשך',tip='',recap=null){
- if(recap)host.append(h(recapHTML(recap)));
  const w=h(`<div class="next3">${tip?`<div class="tip">${tip}</div>`:'<span></span>'}<button class="btn" id="nxb">${label} ${ARROW}</button></div>`);
- host.append(w);const b=qs('#nxb',w);b.onclick=next;b.focus({preventScroll:true});w.scrollIntoView({behavior:'smooth',block:'nearest'});return w;
+ host.append(w);const b=qs('#nxb',w);b.onclick=recap?()=>showRecap(recap):next;b.focus({preventScroll:true});
+ const r=w.getBoundingClientRect();if(r.bottom>window.innerHeight)window.scrollBy({top:r.bottom-window.innerHeight+24,behavior:'smooth'});
+ return w;
 }
 function why(host,text){host.append(h(`<div class="why">${text}</div>`))}
 
@@ -686,19 +765,49 @@ function orderTask(host,items){
 }
 
 /* ===================== ACT B screens ===================== */
-function scrB0(){
- const c=stage({act:'ב',step:0,title:'תדריך',sub:'יום ראשון בבסיס',icon:'★',pose:6,
-  say:'{name}, {ברוך הבא|ברוכה הבאה}! מחזור הטירונים מסיים בעוד חודש, והמבחן העיוני על M16 עליך. בוא{|י} נעשה את זה כמו שצריך.'});
- c.body.append(h(`<div class="card"><h3>אז מה זה בכלל מבחן?</h3><p class="quote">"מבחן הוא תהליך שיטתי להתבוננות בהתנהגות, ידע או יכולות, ותיאור של ממצאי ההתבוננות בעזרת סולמות מספריים או קטגוריות קבועות."<small>Cronbach, 1990</small></p></div>`));
- c.body.append(h(`<div class="card" style="margin-top:14px"><h3>שש צלקות מכיתה י"א</h3><p style="color:var(--muted)">כל אחת מהן תחזור אליך בדרך, והפעם {אתה|את} {תתקן|תתקני} אותה.</p><div class="pool" style="margin-top:12px">${['s1','s2','s3','s6','s9','s10'].map(k=>`<span class="scar">${SCARIC}${esc(f(SCARS[k]))}</span>`).join('')}</div></div>`));
- nextBtn(c.after,'מתחילים','',['{הכרת|הכרת} את רוני, את ההגדרה של מבחן ואת שש הצלקות שנתקן בדרך.','מבחן תקף: ארבעה כללים שהופכים מבחן לטוב ומקצועי.']);
+/* reveal-cards helper: resolves when every card was opened */
+function reveal(host,cards,{cols=2,label='נפתחו',onOpen}={}){
+ return new Promise(res=>{
+  const box=h(`<div><div class="rvhd"><span>{לחץ|לחצי} על כל כרטיס כדי לפתוח</span><b id="rvc">0 / ${cards.length}</b></div><div class="rvgrid c${cols}">${cards.map((c,i)=>`<button class="rv" data-i="${i}" aria-expanded="false"><span class="rvf">${c.front}<em>לחצו לפתיחה</em></span><span class="rvb">${c.back}</span></button>`).join('')}</div></div>`);
+  host.append(box);const seen=new Set();
+  box.querySelectorAll('.rv').forEach(b=>b.onclick=()=>{b.classList.add('open');b.setAttribute('aria-expanded','true');const i=+b.dataset.i;if(!seen.has(i)){seen.add(i);qs('#rvc',box).textContent=seen.size+' / '+cards.length;onOpen&&onOpen(i)}if(seen.size===cards.length)res()});
+ });
 }
-const PRIN=[['מיצוי','בוחן את כל החומר ומשקף את מטרות ההכשרה'],['פרופורציונלי','מייצג נכון את הנושאים. לנושאים קריטיים – יותר שאלות'],['בלבדיות','בוחן רק את מה שרלוונטי, ולא נושאים שלא הופיעו בחומר'],['מותאם לרמת הקושי','של התחום ושל הנבחנים. קשה יותר כשצריך, אבל הוגן']];
+async function scrB0(){
+ const c=stage({act:'ב',step:0,title:'תדריך',sub:'אז מה זה בכלל מבחן?',icon:'★',pose:6,
+  say:'{name}, {ברוך הבא|ברוכה הבאה}! מחזור הטירונים מסיים בעוד חודש, והמבחן העיוני על M16 עליך. נתחיל מההגדרה. {השלם|השלימי} אותה מתוך מחסן המילים.'});
+ const words=['התבוננות','ידע','סולמות מספריים'],bank=['ידע','שינון','סולמות מספריים','התבוננות','תחושות'];
+ const box=h(`<div class="card"><p class="clz">"מבחן הוא תהליך שיטתי ל<span class="bl" data-k="0"></span> בהתנהגות, <span class="bl" data-k="1"></span> או יכולות, ותיאור של ממצאי ההתבוננות בעזרת <span class="bl" data-k="2"></span> או קטגוריות קבועות."<small>Cronbach, 1990</small></p>
+  <div class="lbl2" style="margin-top:14px">מחסן מילים · {לחץ|לחצי} על המילה שמתאימה למקום הריק הבא</div><div class="pool" id="bank">${bank.map(w=>`<button class="chip" data-w="${w}">${w}</button>`).join('')}</div></div>`);
+ c.body.append(box);let k=0,first=true;qs('.bl[data-k="0"]',box).classList.add('cur');
+ await new Promise(res=>{qs('#bank',box).onclick=e=>{const b=e.target.closest('.chip');if(!b||b.disabled)return;
+  if(b.dataset.w===words[k]){const bl=qs(`.bl[data-k="${k}"]`,box);bl.textContent=words[k];bl.classList.remove('cur');bl.classList.add('in');b.disabled=true;b.classList.add('right');k++;
+   if(k<words.length)qs(`.bl[data-k="${k}"]`,box).classList.add('cur');else{score(first);res()}}
+  else{first=false;b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),600);c.say(5,'לא המילה הזו. {קרא|קראי} את המשפט שוב, מה נכנס במקום המסומן?')}}});
+ c.say(4,'מצוין. שמת לב? זו בדיוק שאלת קלוז סגורה, עם מחסן מילים. נפגוש אותה שוב בבית המלאכה.');
+ nextBtn(c.after,'המשך','',['{השלמת|השלמת} את ההגדרה של מבחן, ובדרך {פתרת|פתרת} שאלת קלוז סגורה.','שש הצלקות מכיתה י"א, ואיפה נתקן כל אחת.']);
+}
+const SCARFIX={s1:'רב ברירה: מסד שעומד בפני עצמו',s2:'רב ברירה: שאלה אחת בכל מסד',s3:'רב ברירה: מדגישים מילת שלילה',s6:'השלמה: בלי רמזים דקדוקיים',s9:'שאלה פתוחה ממוקדת וחד-משמעית',s10:'הוראות המבחן: משך הבחינה'};
+async function scrB0b(){
+ const c=stage({act:'ב',step:0,title:'שש הצלקות',sub:'מה הפיל אותך בכיתה י"א',icon:'!',pose:3,
+  say:'כל צלקת מכיתה י"א היא כלל שעוד לא {הכרת|הכרת}. {הפוך|הפכי} את הכרטיסים ו{תגלה|תגלי} איפה נתקן כל אחת.'});
+ await reveal(c.body,['s1','s2','s3','s6','s9','s10'].map(k=>({front:`<span class="scar">${SCARIC}צלקת</span><b>${esc(f(SCARS[k]))}</b>`,back:`<small>נתקן ב:</small><b>${SCARFIX[k]}</b>`})),{cols:3});
+ c.say(4,'עכשיו {אתה יודע|את יודעת} מה מחכה. נתחיל בכללים של מבחן טוב.');
+ nextBtn(c.after,'המשך','',['{הפכת|הפכת} את שש הצלקות ו{גילית|גילית} איפה בלומדה נתקן כל אחת.','מבחן תקף: ארבעה כללים שהופכים מבחן לטוב ומקצועי.']);
+}
+const PRIN=[['מיצוי','בוחן את כל החומר ומשקף את מטרות ההכשרה. אם למדנו נושא ברמת יישום, גם במבחן תהיה שאלת יישום.'],['פרופורציונלי','מייצג נכון את הנושאים המוערכים: לנושאים קריטיים מקדישים יותר שאלות.'],['בלבדיות','בוחן רק את הרכיבים הרלוונטיים. לא נושאים שלא היו בחומר, ולא הבנת הנקרא בגלל הוראות לא ברורות.'],['מותאם לרמת הקושי','של התחום (נושא מורכב: מבחן קשה יותר, אבל הוגן) ושל הנבחנים (כמה ניסיון יש להם).']];
+async function scrB1a(){
+ const c=stage({act:'ב',step:0,title:'מבחן תקף',sub:'ארבעה כללים שהופכים מבחן לטוב ומקצועי',icon:'✓',pose:1,
+  say:'מבחן תקף הוא מבחן טוב ומקצועי. יש לו ארבעה כללים. {פתח|פתחי} את כולם.'});
+ const SAY=['מיצוי: כל החומר שנלמד, ובאותה רמה שנלמד.','פרופורציונלי: המשקל של כל נושא לפי החשיבות שלו.','בלבדיות: רק מה שבאמת שייך לחומר.','מותאם לרמת הקושי: קשה כשצריך, אבל הוגן.'];
+ await reveal(c.body,PRIN.map(p=>({front:`<b class="big1">${p[0]}</b>`,back:`<b>${p[0]}</b><span>${p[1]}</span>`})),{cols:2,onOpen:i=>c.say(1,SAY[i])});
+ c.say(4,'{פתחת|פתחת} את כל הארבעה. עכשיו נראה אם {תזהה|תזהי} אותם בתלונות אמיתיות.');
+ nextBtn(c.after,'המשך','',['{הכרת|הכרת} את ארבעת הכללים של מבחן תקף.','תלונות של חניכים: איזה כלל הופר בכל אחת?']);
+}
 async function scrB1(){
- const c=stage({act:'ב',step:0,title:'מבחן תקף',sub:'ארבעה כללים שהופכים מבחן לטוב ומקצועי',icon:'✓',pose:2,
+ const c=stage({act:'ב',step:0,title:'מבחן תקף',sub:'איזה כלל הופר?',icon:'✓',pose:2,
   say:'קיבלתי ארבע תלונות מהמחזור הקודם. איזה כלל של מבחן תקף הופר בכל אחת?'});
- c.body.append(h(`<div class="pcards">${PRIN.map(p=>`<div class="pcard"><b>${p[0]}</b><span>${p[1]}</span></div>`).join('')}</div>`));
- const host=h('<div style="margin-top:18px"></div>');c.body.append(host);
+ const host=h('<div></div>');c.body.append(host);
  const opts=PRIN.map(p=>p[0]);
  await sequence(host,[
   {small:'תלונה מחניך',t:'"למדנו נושא שלם בקורס, והוא בכלל לא הופיע במבחן."',c:0,ok:'נכון. מבחן ממצה בוחן את כל החומר ומשקף את מטרות ההכשרה.',rule:['מבחן תקף','מיצוי: המבחן בוחן את כל החומר'],wd:'לא בדיוק. החומר נלמד, אבל המבחן לא בדק אותו. איזה כלל דורש לבחון את כל החומר?'},
@@ -706,7 +815,7 @@ async function scrB1(){
   {small:'תלונה מחניך',t:'"הייתה שאלה על הערה שהמדריך אמר בכיתה בדרך אגב. היא לא הופיעה במצגת ולא באוגדן."',c:2,ok:'נכון. בוחנים רק את מה שבאמת היה חלק מהחומר.',rule:['מבחן תקף','בלבדיות: בוחנים רק את מה שנלמד'],wd:'השאלה בדקה משהו שלא היה חלק משמעותי מהחומר. איזה כלל אומר לבחון רק את הרלוונטי?'},
   {small:'תלונה ממפקד',t:'"בקורס מ"כים נתנו מבחן על נשק באותה רמה כמו לטירונים."',c:3,ok:'נכון. למ"כ בקורס מ"כים כותבים מבחן קצת קשה יותר על נשק מאשר לטירון.',rule:['מבחן תקף','מותאם לרמת הקושי של התחום ושל הנבחנים'],wd:'חשוב על מי שנבחן. מה ההבדל בין מ"כ לטירון?'}
  ],{opts,label:'תלונה'});
- nextBtn(c.after,'המשך','',['{זיהית|זיהית} בתלונות של חניכים את ארבעת הכללים של מבחן תקף: מיצוי, פרופורציונלי, בלבדיות והתאמה לרמת הקושי.','שבעת השלבים בבניית מבחן עיוני.']);
+ nextBtn(c.after,'המשך','',['{זיהית|זיהית} בתלונות של חניכים את ארבעת הכללים של מבחן תקף.','שבעת השלבים בבניית מבחן עיוני.']);
 }
 async function scrB2(){
  const c=stage({act:'ב',step:0,title:'שבעת השלבים',sub:'בונים כל מבחן לפי אותו תהליך',icon:'7',pose:8,
@@ -729,11 +838,20 @@ async function scrB3(){
  nextBtn(c.after,'לשלב 2','',['{בנית|בנית} עץ נושאים למבחן סוף טירונות, רק מנושאים שנלמדו בטירונות.','שלב 2: מתאימים לכל נושא את רמת הלמידה.']);
 }
 const LEVELS=['זיכרון והבנה','תפעול והרגל','ניתוח והערכה','יצירה'];
+const PYR=[['יצירה','לחשוב על רעיון, להביא משהו חדש, להתמודד עם אתגר. החניך מוצא פתרון לבעיה.'],['ניתוח והערכה','להשוות, לחלק לקטגוריות, להבין יחסים ולהסיק משמעויות.'],['תפעול והרגל','לעשות פעולה לפי סד"פ או סדר מסוים. לרוב שאלות על סדר.'],['זיכרון והבנה','לשלוף מהזיכרון מידע רלוונטי. שאלות שבודקות ידע וזיכרון בלבד.']];
+async function scrB4a(){
+ const c=stage({act:'ב',step:2,title:'רמת למידה',sub:'ארבע רמות, מהבסיס ועד הפסגה',icon:'2',pose:1,
+  say:'את רמות הלמידה {הכרת|הכרת} בלומדת המטרות. {לחץ|לחצי} על כל קומה בפירמידה, מלמטה למעלה.'});
+ const box=h(`<div><div class="rvhd"><span>{לחץ|לחצי} על כל קומה כדי לפתוח</span><b id="pc">0 / 4</b></div><div class="pyr2">${PYR.map((p,i)=>`<button class="pt" data-i="${i}" style="width:${46+i*18}%"><b>${p[0]}</b><span>${p[1]}</span></button>`).join('')}</div></div>`);
+ c.body.append(box);const seen=new Set();
+ await new Promise(res=>box.querySelectorAll('.pt').forEach(b=>b.onclick=()=>{b.classList.add('open');seen.add(b.dataset.i);qs('#pc',box).textContent=seen.size+' / 4';c.say(1,PYR[+b.dataset.i][0]+': '+PYR[+b.dataset.i][1]);if(seen.size===4)res()}));
+ c.say(4,'מעולה. לכל נושא בוחרים על איזו רמה נשאל. הכול תלוי במה שאנחנו רוצים למדוד.');
+ nextBtn(c.after,'המשך','',['{פתחת|פתחת} את ארבע רמות הלמידה בפירמידה.','מתאימים שאלות לדוגמה לרמה הנכונה.']);
+}
 async function scrB4(){
- const c=stage({act:'ב',step:2,title:'רמת למידה',sub:'על כל נושא: באיזו רמה נשאל?',icon:'2',pose:1,
-  say:'את רמות הלמידה {הכרת|הכרת} בלומדת המטרות. עכשיו נבחר לכל נושא על איזו רמה נשאל. הכול תלוי במה שאנחנו רוצים למדוד.'});
- c.body.append(h(`<div class="pyr"><div><b>יצירה</b>לחשוב על רעיון, להביא משהו חדש, להתמודד עם אתגר</div><div><b>ניתוח והערכה</b>להשוות, לחלק לקטגוריות, להסיק משמעויות</div><div><b>תפעול והרגל</b>לעשות פעולה לפי סד"פ או סדר מסוים</div><div><b>זיכרון והבנה</b>לשלוף מהזיכרון מידע רלוונטי</div></div>`));
- const host=h('<div style="margin-top:18px"></div>');c.body.append(host);
+ const c=stage({act:'ב',step:2,title:'רמת למידה',sub:'איזו רמה בודקת כל שאלה?',icon:'2',pose:3,
+  say:'ארבע שאלות לדוגמה. לאיזו רמת למידה שייכת כל אחת?'});
+ const host=h('<div></div>');c.body.append(host);
  await sequence(host,[
   {small:'דוגמה לשאלה',t:'"באיזו שנה פרצה מלחמת יום הכיפורים?"',c:0,ok:'נכון. שאלה שבודקת ידע וזיכרון בלבד.',wd:'השאלה רק מבקשת לשלוף עובדה מהזיכרון.'},
   {small:'דוגמה לשאלה',t:'"לפנייך פעולות לשטיפת ג\'ירפה. סדר את הפעולות על פי סדרן הנכון."',c:1,ok:'בדיוק. שאלות בתפעול והרגל עוסקות בסד"פ או בסדר מסוים.',wd:'יש כאן סדר פעולות. איזו רמה עוסקת בסד"פ?'},
@@ -741,7 +859,7 @@ async function scrB4(){
   {small:'דוגמה לשאלה',t:'"בגן החיות בקיץ כל החיות מתחבאות, והמבקרים לא נהנים. כתוב קטע באורך 10 שורות ובו הצעתך לפתרון."',c:3,ok:'בדיוק. התמודדות עם בעיה ומציאת פתרון חדש היא יצירה.',wd:'החניך צריך להמציא פתרון לבעיה. איזו רמה הכי גבוהה?'}
  ],{opts:LEVELS,label:'שאלה'});
  addRule('רמת למידה','לכל נושא בוחרים על איזו רמת למידה נשאל, לפי מה שרוצים למדוד',host);
- nextBtn(c.after,'לשלב 3','',['{התאמת|התאמת} שאלות לארבע רמות הלמידה: זיכרון והבנה, תפעול והרגל, ניתוח והערכה, יצירה.','שלב 3: מחליטים כמה שאלות יקבל כל נושא.']);
+ nextBtn(c.after,'לשלב 3','',['{התאמת|התאמת} שאלות לארבע רמות הלמידה.','שלב 3: מחליטים כמה שאלות יקבל כל נושא.']);
 }
 async function scrB5(){
  const c=stage({act:'ב',step:3,title:'כמות שאלות בכל נושא',sub:'טבלת המתאר',icon:'3',pose:7,
@@ -766,13 +884,13 @@ async function scrB5(){
  addRule('כמות שאלות','את טבלת המתאר מאשר מומחה תוכן',null);
  nextBtn(c.after,'לשלב 4','',['{חילקת|חילקת} 10 שאלות לפי משקל הנושאים, ו{קיבלת|קיבלת} אישור של מומחה תוכן.','שלב 4: חיבור פריטי השאלות, השלב הכי חשוב.']);
 }
-function scrB6(){
- const c=stage({act:'ב',step:4,title:'חיבור פריטי השאלות',sub:'בית המלאכה',icon:'4',pose:1,
-  say:'זה השלב הכי חשוב. כולנו מכירים סוגי שאלות, אבל לא תמיד יודעים לכתוב אותן טוב. שאלה טובה לא מכשילה חניך בגלל טעות בהבנת השאלה.'});
- const T=[['רב ברירה','מסד, תשובה נכונה אחת ומסיחים'],['נכון / לא נכון','היגד שהנבחן מחליט אם הוא נכון'],['התאמה','שני טורים שמחברים ביניהם'],['סדר מחדש','רשימה לא מסודרת שצריך לסדר'],['השלמה','משפט עובדתי שחסרה בו עובדה אחת'],['זיהוי','תמונה, מפה או שרטוט לזהות'],['פתוחה ממוקדת','הנבחן מחבר תשובה, עם הנחיות מכוונות'],['רשימה','הוראה לביצוע בלי חלק מהתשובה'],['קלוז','טקסט שמילים הושמטו ממנו']];
- c.body.append(h(`<div class="types9">${T.map(t=>`<div><b>${t[0]}</b><span>${t[1]}</span></div>`).join('')}</div>`));
- c.body.append(h(`<p style="margin-top:14px;color:var(--muted)">בכל סוג נעבור על טיוטות מהמבחן של המחזור הקודם, נמצא מה לא בסדר ונתקן. חלק מהן {תכיר|תכירי} מכיתה י"א.</p>`));
- nextBtn(c.after,'לבית המלאכה','',['{הכרת|הכרת} את תשעת סוגי השאלות במבחן עיוני.','בית המלאכה: מתקנים טיוטות של שאלות רב ברירה.']);
+async function scrB6(){
+ const c=stage({act:'ב',step:4,title:'חיבור פריטי השאלות',sub:'תשעה סוגי שאלות',icon:'4',pose:1,
+  say:'זה השלב הכי חשוב. כולנו מכירים סוגי שאלות, אבל לא תמיד יודעים לכתוב אותן טוב. {הפוך|הפכי} את כל תשעת הכרטיסים.'});
+ const T=[['רב ברירה','מסד, תשובה נכונה אחת ומסיחים. הנפוצה ביותר בצה"ל.'],['נכון / לא נכון','היגד שהנבחן מחליט אם הוא נכון. 50% סיכוי לנחש.'],['התאמה','שני טורים שמחברים ביניהם בקו או במספר.'],['סדר מחדש','רשימה לא מסודרת שצריך לסדר. לנושאים שעיקרם סדר.'],['השלמה','משפט עובדתי שחסרה בו עובדה אחת.'],['זיהוי','תמונה, מפה או שרטוט, ומזהים מה מופיע.'],['פתוחה ממוקדת','הנבחן מחבר תשובה, עם הנחיות שמכוונות אותו.'],['רשימה','הוראה לביצוע, בלי לתת חלק מהתשובה.'],['קלוז','טקסט שמילים הושמטו ממנו, עם או בלי מחסן מילים.']];
+ await reveal(c.body,T.map(t=>({front:`<b class="big1">${t[0]}</b>`,back:`<b>${t[0]}</b><span>${t[1]}</span>`})),{cols:3});
+ c.say(4,'עכשיו לבית המלאכה. בכל סוג נתקן טיוטות מהמבחן של המחזור הקודם, וחלק מהן {תכיר|תכירי} מכיתה י"א.');
+ nextBtn(c.after,'לבית המלאכה','',['{הפכת|הפכת} את תשעת סוגי השאלות במבחן עיוני.','בית המלאכה: מתקנים טיוטות של שאלות רב ברירה.']);
 }
 
 /* draft screen */
@@ -974,11 +1092,18 @@ function otherTypes(){
   }
  ];
 }
+async function scrScoreA(){
+ const c=stage({act:'ב',step:4,title:'ניקוד',sub:'ארבע שאלות לפני שנותנים ניקוד',icon:'4',pose:7,
+  say:'לפני שנותנים ניקוד לשאלה, שואלים ארבע שאלות. {פתח|פתחי} אותן.'});
+ const Q=[['מהם התכנים העיקריים?','לתכנים העיקריים נותנים את עיקר הניקוד, כי דורשים אותם יותר במצב האמת.'],['מהי רמת הלמידה בשאלה?','ניקוד גבוה יותר לשאלות קשות, ונמוך יותר לקלות.'],['מהי החשיבות היחסית של הידע?','האם הניקוד משקף את חשיבות החומר ביחס לשאר השאלות?'],['מהי הרמה הנדרשת לפי סוג הפריט?','שאלת נכון / לא נכון לא תקבל יותר נקודות משאלה פתוחה על אותו נושא.']];
+ await reveal(c.body,Q.map((q,i)=>({front:`<small>שאלה ${i+1}</small><b>${q[0]}</b>`,back:`<b>${q[0]}</b><span>${q[1]}</span>`})),{cols:2});
+ c.say(4,'עכשיו נשתמש בזה בשלוש השוואות קצרות.');
+ nextBtn(c.after,'המשך','',['{פתחת|פתחת} את ארבע השאלות ששואלים לפני ניקוד.','שלוש השוואות: איזו שאלה מקבלת יותר נקודות?']);
+}
 async function scrScore(){
- const c=stage({act:'ב',step:4,title:'ניקוד',sub:'ניקוד הוגן לכל שאלה',icon:'4',pose:7,
-  say:'לפני שנותנים ניקוד, שואלים ארבע שאלות. אחר כך שלוש השוואות קצרות.'});
- c.body.append(h(`<div class="pcards"><div class="pcard"><b>1</b><span>מהם התכנים העיקריים? להם רוב הניקוד.</span></div><div class="pcard"><b>2</b><span>מהי רמת הלמידה? שאלה קשה יותר מקבלת יותר.</span></div><div class="pcard"><b>3</b><span>מהי החשיבות היחסית של הידע לשאר השאלות?</span></div><div class="pcard"><b>4</b><span>מהי הרמה הנדרשת לפי סוג הפריט והקושי?</span></div></div>`));
- const host=h('<div style="margin-top:18px"></div>');c.body.append(host);
+ const c=stage({act:'ב',step:4,title:'ניקוד',sub:'איזו שאלה מקבלת יותר?',icon:'4',pose:3,
+  say:'שלוש השוואות. איזו שאלה תקבל יותר נקודות?'});
+ const host=h('<div></div>');c.body.append(host);
  await sequence(host,[
   {small:'אותו נושא, שני סוגי פריט',t:'איזו שאלה תקבל יותר נקודות?',opts:['שאלת נכון / לא נכון','שאלה פתוחה'],c:1,ok:'נכון. שאלת נכון/לא נכון לא תקבל יותר נקודות משאלה פתוחה על אותו נושא.'},
   {small:'שתי רמות למידה',t:'איזו שאלה תקבל יותר נקודות?',opts:['שאלה ברמת זיכרון והבנה','שאלה ברמת יצירה'],c:1,ok:'בדיוק. ניקוד גבוה יותר לשאלות קשות, נמוך יותר לקלות.'},
@@ -1009,10 +1134,19 @@ function itemCard(o){
   <div class="scale"><b>אחוז העונים נכון מתוך 20 טירונים</b><div class="meter"><i style="width:${o.p}%"></i></div><div class="ticks"><span>0%</span><span>50%</span><span>100%</span></div></div></div></div>`);
 }
 const DIFF_CARD=`<div class="card" style="margin-bottom:14px;display:flex;gap:14px;align-items:center"><div class="chap" style="margin:0"><div class="ic" style="background:var(--forest)">%</div></div><div><h3 style="margin:0">דרגת קושי</h3><p style="color:var(--muted)">מבטאת את אחוז העונים נכון על השאלה. ניתוח פריטים עוזר לאתר שאלות שאינן טובות, ולתקן אותן.</p></div></div>`;
+async function scrPilot0(){
+ const c=stage({act:'ג',step:6,title:'הפיילוט',sub:'מה זו דרגת קושי?',icon:'6',pose:7,
+  say:'הרצנו פיילוט: 20 טירונים פתרו את המבחן. בודקים כל שאלה לפי דרגת הקושי שלה, כלומר אחוז העונים נכון. בוא{|י} {נתרגל|נתרגל} חישוב אחד.'});
+ c.body.append(h(DIFF_CARD));
+ const a=h('<div></div>');c.body.append(a);
+ a.append(h(`<div class="qcard"><small>תרגיל</small>20 טירונים ענו על שאלה. 5 מהם ענו נכון. מה דרגת הקושי של השאלה?</div>`));
+ await choose(a,{q:'',opts:['25%','5%','75%'],correct:0,cols:2,wrong:{1:'5 הוא מספר העונים נכון, לא האחוז. כמה זה 5 מתוך 20?',2:'75% אלה מי שטעו. דרגת הקושי היא אחוז העונים נכון.'}});
+ c.say(4,'נכון: 5 מתוך 20 זה 25%. רק רבע ענו נכון, ולכן זו שאלה קשה.');
+ nextBtn(c.after,'לשאלות בפיילוט','',['{למדת|למדת} מה זו דרגת קושי ו{חישבת|חישבת} אחת: 5 מתוך 20 זה 25%.','השאלה הראשונה בפיילוט: השאלה שתיקנת.']);
+}
 async function scrPilot1(){
  const c=stage({act:'ג',step:6,title:'הפיילוט',sub:'20 טירונים פתרו את המבחן שלך',icon:'6',pose:7,
-  say:'הרצנו פיילוט. 20 טירונים פתרו את המבחן. עכשיו בודקים כל שאלה לפי דרגת הקושי שלה.'});
- c.body.append(h(DIFF_CARD));
+  say:'זו השאלה על נפוליאון, אחרי שתיקנת אותה. מה אומרת דרגת הקושי שלה?'});
  c.body.append(h(`<div class="pil"><div id="itm"></div><div class="feed"><h4><span>מה אמרו בכיתה</span><span>20 טירונים</span></h4>
   <div class="msg good"><div class="a">ד</div><div class="b"><small>דניאל</small>בראש הדף היה כתוב כמה זמן יש ואיך מסמנים. ידעתי בדיוק מה מצופה ממני.</div></div>
   <div class="msg good"><div class="a" style="background:#CFE5BE">י</div><div class="b"><small>יובל</small>בשאלה על נפוליאון ידעתי בדיוק מה שואלים.</div></div>
@@ -1060,7 +1194,7 @@ function scrEnd(){
  const fv=fair();
  c.body.append(h(`<div class="ep" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="big"><b>מד הוגנות</b><span>${fv===null?'—':fv+'%'}</span><small style="display:block;font-size:12.5px;color:var(--muted)">תשובות נכונות בניסיון הראשון</small></div>
   <div class="big"><b>צלקות שתוקנו</b><span>${S.fixed.length} / 6</span><small style="display:block;font-size:12.5px;color:var(--muted)">מכיתה י"א</small></div></div>`));
- c.body.append(h(`<div class="cheat"><h3>עיקרי השיעור · כתיבת מבחן עיוני</h3>${SUMMARY.map(([t,xs])=>`<div class="grp"><b>${t}</b><ul>${xs.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>`));
+ c.body.append(h(`<div class="cheat"><h3>עיקרי השיעור · כתיבת מבחן עיוני</h3><p style="color:var(--muted);font-size:14px">{לחץ|לחצי} על נושא כדי לפתוח אותו.</p>${SUMMARY.map(([t,xs],i)=>`<details class="acc"${i===0?' open':''}><summary>${t}</summary><ul>${xs.map(x=>`<li>${x}</li>`).join('')}</ul></details>`).join('')}</div>`));
  const canPrint=(()=>{try{return window.self===window.top}catch(e){return false}})();
  const w=h(`<div class="next3"><span></span><div style="display:flex;gap:10px;flex-wrap:wrap">${canPrint?'<button class="btn ghost" id="pr">הדפסת הסיכום</button>':''}<button class="btn" id="rs">להתחיל מחדש</button></div></div>`);
  c.after.append(w);
@@ -1101,18 +1235,19 @@ function scrEntry(){
 
 /* ===================== FLOW ===================== */
 function buildScreens(){
- return [scrEntry,scrAIntro,...EXAM.map((_,k)=>()=>scrAQ(k)),scrADebrief,scrTrans,scrB0,scrB1,scrB2,scrB3,scrB4,scrB5,scrB6,
-  ...mcDrafts(),...tfScreens(),...otherTypes(),scrScore,scrInstr,scrPilot1,scrPilot2,scrEnd];
+ return [scrEntry,scrAIntro,...EXAM.map((_,k)=>()=>scrAQ(k)),scrADebrief,scrTrans,scrB0,scrB0b,scrB1a,scrB1,scrB2,scrB3,scrB4a,scrB4,scrB5,scrB6,
+  ...mcDrafts(),...tfScreens(),...otherTypes(),scrScoreA,scrScore,scrInstr,scrPilot0,scrPilot1,scrPilot2,scrEnd];
 }
 let entryShown=false;
+function toTop(){const go=()=>{window.scrollTo(0,0);if(document.scrollingElement)document.scrollingElement.scrollTop=0;document.body.scrollTop=0};go();requestAnimationFrame(go);setTimeout(go,80)}
 function render(forceIdx){
  TIMERS.forEach(clearTimeout);TIMERS=[];NTH=0;document.querySelectorAll('.timeup,.modal').forEach(x=>x.remove());
  const list=buildScreens();
  if(S.i>=list.length)S.i=list.length-1;
  if(!entryShown&&S.i>0&&!forceIdx){entryShown=true;scrEntry();return}
  entryShown=true;
- window.scrollTo(0,0);
  const r=list[S.i]();if(r&&r.catch)r.catch(e=>console.error(e));
+ toTop();
 }
 function next(){S.i++;save();render(true)}
 render();
