@@ -651,6 +651,29 @@ details.more .in ul{margin:6px 0 0;padding-right:18px}
  .exam .q span[data-hot]{padding:2px 3px}
  .cut{width:34px;height:34px}
 }
+
+/* instructions page */
+.intro{min-height:100vh;display:grid;place-items:center;padding:32px 16px;background:var(--bg,#F6F1E6)}
+.icard{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:28px 32px;max-width:720px;width:100%;box-shadow:0 22px 50px -30px var(--shadow);animation:pop .35s ease}
+.ihead{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.ihead .emb{width:52px;height:52px}
+.ihead small{font-size:13px;font-weight:800;color:var(--green);letter-spacing:.03em}
+.ihead h2{margin:2px 0 0;font-size:clamp(26px,3.4vw,34px);font-weight:900;line-height:1.15}
+.isec{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}
+.isec>i{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-style:normal}
+.isec>i svg{width:21px;height:21px}
+.isec>i.g{background:#E7F0DD;color:var(--forest)}.isec>i.t{background:#F6E6D3;color:#9A5B22}.isec>i.m{background:#E3E9F3;color:#38507A}.isec>i.p{background:var(--sage);color:var(--forest)}
+.isec b{display:block;font-size:17px;margin-bottom:3px}
+.isec p{margin:0;font-size:15.5px;line-height:1.55}
+.isec ul{margin:6px 0 0;padding-inline-start:18px}.isec li{font-size:15.5px;line-height:1.6}
+.iacts{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+.iacts li{display:flex;gap:10px;align-items:baseline;font-size:15.5px;line-height:1.5}
+.iacts em{flex:none;font-style:normal;font-weight:800;font-size:13px;background:var(--forest);color:var(--white);border-radius:99px;padding:2px 10px}
+.ifoot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+@media (max-width:620px){.icard{padding:20px 18px;border-radius:20px}.intro{padding:14px 12px;place-items:start center}
+ .ifoot{flex-direction:column-reverse;align-items:stretch}.ifoot .btn{width:100%;justify-content:center}.ifoot .back{justify-content:center}
+ .iacts li{flex-direction:column;gap:3px}
+ .ifoot .back span{display:inline}}
 </style>
 </head>
 <body>
@@ -1548,9 +1571,37 @@ function scrEntry(){
 
 /* ===================== FLOW ===================== */
 function buildScreens(){
- return [scrEntry,scrAIntro,...EXAM.map((_,k)=>()=>scrAQ(k)),scrADebrief,scrTrans,scrB0,scrB0b,scrB1a,scrB1,scrB2,scrB3,scrB4a,scrB4,scrB5,scrB6,
+ return [scrEntry,scrIntro,scrAIntro,...EXAM.map((_,k)=>()=>scrAQ(k)),scrADebrief,scrTrans,scrB0,scrB0b,scrB1a,scrB1,scrB2,scrB3,scrB4a,scrB4,scrB5,scrB6,
   ...mcDrafts(),...tfScreens(),...otherTypes(),scrScoreA,scrScore,scrInstrA,scrInstrB,scrPilot0,scrPilot1,scrPilot2,scrEnd];
 }
+
+/* ===================== INSTRUCTIONS (after entry) ===================== */
+function scrIntro(){
+ TIMERS.forEach(clearTimeout);TIMERS=[];
+ app.innerHTML='';
+ const IC={goal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>',
+  time:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg>',
+  pass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'};
+ const el=h(`<div class="intro"><div class="icard">
+  <div class="ihead"><img class="emb" alt="סמל בית הספר להדרכה" src="${EMBLEM}"><div><small>הוראות הלומדה</small><h2>לפני שמתחילים, {name}</h2></div></div>
+  <div class="isec"><i class="g">${IC.goal}</i><div><b>מטרת הלומדה</b>
+   <p>בסוף הלומדה {תדע|תדעי} לבנות שאלות למבחן עיוני על פי העקרונות המוגדרים:</p>
+   <ul><li>להסביר את שבעת השלבים בבניית מבחן עיוני</li><li>לפרט את סוגי השאלות הקיימות</li><li>להסביר את ההנחיות לכתיבת שאלה</li></ul></div></div>
+  <div class="isec"><i class="t">${IC.time}</i><div><b>כמה זמן</b>
+   <p>כ־30–40 דקות. ההתקדמות נשמרת בדפדפן, אז אפשר לעצור ולחזור מאותה נקודה.</p></div></div>
+  <div class="isec"><i class="m">${IC.map}</i><div><b>מה הולך להיות</b>
+   <ol class="iacts"><li><em>מערכה א'</em><span>פלאשבק לכיתה י"א: מבחן קצר של 5 שאלות, ו{תגלה|תגלי} מה היה לא בסדר בו.</span></li>
+   <li><em>מערכה ב'</em><span>עם רוני, מפקד הקורס, {תכתוב|תכתבי} מבחן סוף טירונות על M16, שלב אחרי שלב, ו{תתקן|תתקני} שאלות פגומות.</span></li>
+   <li><em>מערכה ג'</em><span>פיילוט: בודקים את דרגת הקושי של השאלות, ובסוף סיכום של עיקרי השיעור.</span></li></ol></div></div>
+  <div class="isec"><i class="p">${IC.pass}</i><div><b>מה נדרש כדי לעבור</b>
+   <ul><li>לעבור את כל העמודים עד מסך הסיום.</li><li>בכל משימה ממשיכים רק אחרי תשובה נכונה. טעית? {נסה|נסי} שוב, רוני ייתן רמז.</li>
+   <li>בסרגל העליון {תראה|תראי} נקודות על תשובות נכונות בניסיון הראשון.</li><li>בכל עמוד יש כפתור "חזור", ואחרי כל עמוד מסך קצר של מה עשינו ומה הלאה.</li></ul></div></div>
+  <div class="ifoot">${backBtn()}<button class="btn" id="nx">הבנתי, אפשר להתחיל ${ARROW}</button></div>
+ </div></div>`);
+ app.append(el);wireBack(el);toTop();qs('#nx',el).onclick=next;
+}
+
 let entryShown=false;
 function toTop(){const go=()=>{window.scrollTo(0,0);if(document.scrollingElement)document.scrollingElement.scrollTop=0;document.body.scrollTop=0};go();requestAnimationFrame(go);setTimeout(go,80)}
 function render(forceIdx){
